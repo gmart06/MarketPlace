@@ -13,11 +13,6 @@ public class CatalogController {
 	@Autowired
 	public CatalogController(CatalogService catalogService) {
 		this.catalogService = catalogService;
-		String toto = "okyyy";    
-	}
-	
-	public void toto() {
-		
 	}
 
 }
