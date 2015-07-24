@@ -15,5 +15,9 @@ public class CatalogController {
 		this.catalogService = catalogService;
 		String toto = "ok"; 
 	}
+	
+	public void toto() {
+		
+	}
 
 }
