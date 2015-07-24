@@ -14,5 +14,9 @@ public class CatalogController {
 	public CatalogController(CatalogService catalogService) {
 		this.catalogService = catalogService;
 	}
+	
+	public void toto() {
+		
+	}
 
 }
