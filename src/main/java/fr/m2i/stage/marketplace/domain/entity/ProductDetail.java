@@ -25,7 +25,9 @@ public class ProductDetail {
 	private String color;
 	private double weight;
 	
-	@OneToMany(mappedBy=("???"))
+	private Product product;
+	
+	@OneToMany(mappedBy=("productdetail"))
 	private List<Delivery> deliveries;
 	
 	public ProductDetail() {}
@@ -139,4 +141,11 @@ public class ProductDetail {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+		// ajouter test du produit sans produitDetail
+	}	
 }

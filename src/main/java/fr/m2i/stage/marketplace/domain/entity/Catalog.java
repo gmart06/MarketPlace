@@ -3,7 +3,6 @@ package fr.m2i.stage.marketplace.domain.entity;
 import java.util.Date;
 import java.util.List;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,13 +16,13 @@ public class Catalog {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToMany(mappedBy=("???"))
-	private List<Product> products;
-	
 	private Date creationDate;
 	private String url;
 	
-	public Catalog() {}	
+	@OneToMany(mappedBy=("container"))
+	private List<Product> products;
+	
+	public Catalog() {}
 	
 	public Catalog(List<Product> products, Date creationDate, String url) {
 		this.products = products;

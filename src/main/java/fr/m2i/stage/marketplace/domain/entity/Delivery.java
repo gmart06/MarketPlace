@@ -16,6 +16,8 @@ public class Delivery {
 	private int delay;
 	private double fees;
 	
+	private ProductDetail productdetail;
+	
 	public Delivery() {}
 
 	public Delivery(String name, int delay, double fees) {

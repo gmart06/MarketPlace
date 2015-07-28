@@ -18,8 +18,8 @@ public class Category {
 	private String name;
 	private boolean isVisible;
 	
-	@OneToMany(mappedBy=("???"))
-	private List<Product> listProduct;
+	@OneToMany(mappedBy=("category"))
+	private List<Product> products;
 	
 	public Category() {}	
 	
@@ -46,11 +46,10 @@ public class Category {
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
-	public List<Product> getListProduct() {
-		return listProduct;
+	public List<Product> getProducts() {
+		return products;
 	}
-	public void setListProduct(List<Product> listProduct) {
-		this.listProduct = listProduct;
-	}
-	
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}	
 }

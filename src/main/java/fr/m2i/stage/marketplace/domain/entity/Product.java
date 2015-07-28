@@ -3,12 +3,9 @@ package fr.m2i.stage.marketplace.domain.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -23,7 +20,10 @@ public class Product {
 	private String description;
 	private boolean isVisible;
 	
-	@OneToMany(mappedBy=("???"))
+	private Catalog container;
+	private Category category;	
+	
+	@OneToMany(mappedBy=("product"))
 	private List<ProductDetail> listProductDetail;
 	
 	public Product() {}	
@@ -66,12 +66,24 @@ public class Product {
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
-
 	public List<ProductDetail> getListProductDetail() {
 		return listProductDetail;
 	}
-
 	public void setListProductDetail(List<ProductDetail> listProductDetail) {
 		this.listProductDetail = listProductDetail;
+	}
+	public Catalog getContainer() {
+		return container;
+	}
+	public void setContainer(Catalog container) {
+		this.container = container;
+		// ajouter test du catalog vide
+	}
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+		// ajouter test d'une category vide
 	}
 }
