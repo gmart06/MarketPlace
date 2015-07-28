@@ -3,9 +3,13 @@ package fr.m2i.stage.marketplace.domain.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -18,12 +22,13 @@ public class Product {
 	private String title;
 	private String description;
 	private boolean isVisible;
+	
+	@OneToMany(mappedBy=("???"))
 	private List<ProductDetail> listProductDetail;
 	
 	public Product() {}	
 	
-	public Product(Long id, String reference, String title, String description, boolean isVisible, List<ProductDetail> listProductDetail) {
-		this.id = id;
+	public Product(String reference, String title, String description, boolean isVisible, List<ProductDetail> listProductDetail) {		
 		this.reference = reference;
 		this.title = title;
 		this.description = description;

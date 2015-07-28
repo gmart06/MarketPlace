@@ -1,7 +1,5 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,17 +10,15 @@ public class Delivery {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	int id;
+	private int id;
 	
-	String name;
-	Date delay;
-	double fees;
+	private String name;
+	private int delay;
+	private double fees;
 	
 	public Delivery() {}
 
-	public Delivery(int id, String name, Date delay, double fees) {
-		super();
-		this.id = id;
+	public Delivery(String name, int delay, double fees) {
 		this.name = name;
 		this.delay = delay;
 		this.fees = fees;
@@ -44,11 +40,11 @@ public class Delivery {
 		this.name = name;
 	}
 
-	public Date getDelay() {
+	public int getDelay() {
 		return delay;
 	}
 
-	public void setDelay(Date delay) {
+	public void setDelay(int delay) {
 		this.delay = delay;
 	}
 

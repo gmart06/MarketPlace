@@ -13,9 +13,11 @@ public class Merchant {
 	private int id;
 	
 	private String name;
-	private String address;
+	private String address1;
+	private String address2;
 	private String password;
 	private String zipcode;
+	private String city;
 	private String country;
 	private String login;	
 	private String firstname;
@@ -27,13 +29,14 @@ public class Merchant {
 	
 	public Merchant() {}
 	
-	public Merchant(int id, String name, String address, String password, String zipcode, String country, String login,
-			String firstname, String lastname, String email, String phoneNumber, String sIRET, Catalog catalog) {
-		this.id = id;
+	public Merchant(String name, String address1, String address2, String password, String zipcode, String city, String country, String login,
+			String firstname, String lastname, String email, String phoneNumber, String sIRET, Catalog catalog) {		
 		this.name = name;
-		this.address = address;
+		this.address1 = address1;
+		this.address2 = address2;
 		this.password = password;
 		this.zipcode = zipcode;
+		this.city = city;
 		this.country = country;
 		this.login = login;
 		this.firstname = firstname;
@@ -56,11 +59,17 @@ public class Merchant {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAddress() {
-		return address;
+	public String getAddress1() {
+		return address1;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress1(String address) {
+		this.address1 = address;
+	}	
+	public String getAddress2() {
+		return address2;
+	}
+	public void setAddress2(String address2) {
+		this.address2 = address2;
 	}
 	public String getPassword() {
 		return password;
@@ -73,6 +82,12 @@ public class Merchant {
 	}
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
 	}
 	public String getCountry() {
 		return country;

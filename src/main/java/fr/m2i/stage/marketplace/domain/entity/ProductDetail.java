@@ -1,33 +1,37 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ProductDetail {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	int id;
-	String sku;
-	int stock;
-	double price;
-	double ecotax;
-	int ean;
-	String description;
-	String image_url;
-	String size;
-	String color;
-	int weight;
+	private int id;
+	private String sku;
+	private int stock;
+	private double price;
+	private double ecotax;
+	private int ean;
+	private String description;
+	private String image_url;
+	private String size;
+	private String color;
+	private double weight;
+	
+	@OneToMany(mappedBy=("???"))
+	private List<Delivery> deliveries;
 	
 	public ProductDetail() {}
 	
-	public ProductDetail(int id, String sku, int stock, double price, double ecotax, int ean, String description, String image_url,
-			String size, String color, int weight) {
-		super();
-		this.id = id;
+	public ProductDetail(String sku, int stock, double price, double ecotax, int ean, String description, String image_url,
+			String size, String color, int weight, List<Delivery> deliveries) {		
 		this.sku = sku;
 		this.stock = stock;
 		this.price = price;
@@ -38,6 +42,7 @@ public class ProductDetail {
 		this.size = size;
 		this.color = color;
 		this.weight = weight;
+		this.deliveries = deliveries;
 	}	
 
 	public double getPrice() {
@@ -96,7 +101,7 @@ public class ProductDetail {
 		this.color = color;
 	}
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
@@ -121,5 +126,17 @@ public class ProductDetail {
 	}
 	public void setStock(int stock) {
 		this.stock = stock;
-	}	
+	}
+
+	public List<Delivery> getDeliveries() {
+		return deliveries;
+	}
+
+	public void setDeliveries(List<Delivery> deliveries) {
+		this.deliveries = deliveries;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
 }
