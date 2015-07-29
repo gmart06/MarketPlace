@@ -2,10 +2,14 @@ package fr.m2i.stage.marketplace.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+
+import javax.xml.stream.XMLStreamException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import fr.m2i.stage.marketplace.domain.entity.Catalog;
+import fr.m2i.stage.marketplace.importCatalog.ParseXML;
 import fr.m2i.stage.marketplace.service.CatalogService;
 
 @Controller
@@ -34,26 +40,45 @@ public class CatalogController {
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)
-	public String addCatalog(@ModelAttribute("catalogueFile") MultipartFile catalogueFile, Model model) throws IllegalStateException, IOException {
-		if(catalogueFile == null || catalogueFile.getSize() == 0) {
+	public String addCatalog(@ModelAttribute("catalogFile") MultipartFile catalogFile, Model model) throws IllegalStateException, IOException {
+		if(catalogFile == null || catalogFile.getSize() == 0) {
 			// Error no submitted file
 			model.addAttribute("errorFileType", "No transmitted file");
-		} else if (catalogueFile.getSize() > 1048576) { //1Mio
+			return "merchant_space/import_catalog";
+		} else if (catalogFile.getSize() > 1048576) { //1Mio
 			//Error file size too much
 			model.addAttribute("errorFileType", "This file is too big, it must be less than 1Mio.");
+			return "merchant_space/import_catalog";
 		} else {		
 			String directory = "C:\\Users\\Administrateur\\Desktop\\Java Spring\\temp\\";
-			String filename = catalogueFile.getOriginalFilename();
+			String filename = catalogFile.getOriginalFilename();
 			
-			//if (filename.endsWith(".xml")) {
-			if (filename.endsWith(".xml") && isAnXMLFile(catalogueFile.getInputStream())) {
-				catalogueFile.transferTo(new File(directory + filename));
-				model.addAttribute("success", "The file " + filename + " has been correctly received.");
+			if (filename.endsWith(".xml") && isAnXMLFile(catalogFile.getInputStream())) {
+				File catalogXMLFile = new File(directory + filename);
+				catalogFile.transferTo(catalogXMLFile);
+				
+				ParseXML parser = new ParseXML();
+				Catalog catalog = null;
+				try {
+					catalog = parser.readFromXMLProduct(new FileInputStream(catalogXMLFile));
+				} catch (XMLStreamException | URISyntaxException e) {
+					model.addAttribute("errorFileType", "The file can't be open.");
+					return "merchant_space/import_catalog";
+				}
+				
+				if(parser.hasErrors()) {
+					model.addAttribute("errorXMLTitle", "Errors list in your XML files");
+					model.addAttribute("errorXML", parser.getErrors());
+					return "merchant_space/import_catalog";
+				} 
+				
+				model.addAttribute("success", "You have correctly added " + catalog.getProducts().size() + " products in your catalog.");
 			} else {
 				// Error isn't an XML
 				model.addAttribute("errorFileType", "Please, send a XML file.");
+				return "merchant_space/import_catalog";
 			}
-			catalogueFile.getInputStream().close();
+			catalogFile.getInputStream().close();
 		}
 		return "merchant_space/import_catalog";
 	}
