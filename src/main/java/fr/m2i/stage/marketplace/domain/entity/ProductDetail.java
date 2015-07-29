@@ -23,7 +23,7 @@ public class ProductDetail {
 	private int stock;
 	private double price;
 	private double ecotax;
-	private int ean;
+	private String ean;
 	private String description;
 	private String image_url;
 	private String size;
@@ -42,7 +42,7 @@ public class ProductDetail {
 	
 	public ProductDetail() {}
 	
-	public ProductDetail(String sku, int stock, double price, double ecotax, int ean, String description, String image_url,
+	public ProductDetail(String sku, int stock, double price, double ecotax, String ean, String description, String image_url,
 			String size, String color, int weight, Set<Delivery> deliveries) {		
 		this.sku = sku;
 		this.stock = stock;
@@ -73,9 +73,14 @@ public class ProductDetail {
 		this.ecotax = ecotax;
 	}
 
-	public int getEan() {
+
+	public String getEan() {
 		return ean;
-	}	
+	}
+
+	public void setEan(String ean) {
+		this.ean = ean;
+	}
 
 	public String getDescription() {
 		return description;
@@ -85,9 +90,7 @@ public class ProductDetail {
 		this.description = description;
 	}
 
-	public void setEan(int ean) {
-		this.ean = ean;
-	}
+	
 
 	public String getImage_url() {
 		return image_url;
