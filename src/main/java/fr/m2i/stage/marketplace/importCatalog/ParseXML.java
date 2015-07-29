@@ -25,117 +25,111 @@ import fr.m2i.stage.marketplace.domain.entity.ProductDetail;
 public class ParseXML {
 
 	private static final Logger logger = LoggerFactory.getLogger(ParseXML.class);
+
 	private List<ErrorXML> errors = new ArrayList<>();
 	
-	
-	
+	public boolean hasErrors() {
+		return ! errors.isEmpty();
+	}
+
 	public List<ErrorXML> getErrors() {
 		return errors;
 	}
 
-//	public static void main(String[] args) throws URISyntaxException, FileNotFoundException, XMLStreamException {
-//		FileInputStream fis = null;
-//		URL resource = App.class.getResource("catalogue.xml");
-//		File file = new File(resource.toURI());
-//
-//		try {
-//
-//			fis = new FileInputStream(file);
-//			ParseXML p = new ParseXML();
-//			
-//			
-//			System.out.println(p.readFromXMLProduct(fis));
-//			
-//			for (ErrorXML e : p.getErrors()) {
-//				System.out.println("line " + e.getLine() + " : " + e.getMessage());
-//			}
-//			
-//		} catch (ArrayIndexOutOfBoundsException aioobe) {
-//
-//			System.exit(0);
-//		}
-//	
-//	}
+	//	public static void main(String[] args) throws URISyntaxException, FileNotFoundException, XMLStreamException {
+	//		FileInputStream fis = null;
+	//		URL resource = App.class.getResource("catalogue.xml");
+	//		File file = new File(resource.toURI());
+	//
+	//		try {
+	//
+	//			fis = new FileInputStream(file);
+	//			ParseXML p = new ParseXML();
+	//			
+	//			
+	//			System.out.println(p.readFromXMLProduct(fis));
+	//			
+	//			for (ErrorXML e : p.getErrors()) {
+	//				System.out.println("line " + e.getLine() + " : " + e.getMessage());
+	//			}
+	//			
+	//		} catch (ArrayIndexOutOfBoundsException aioobe) {
+	//
+	//			System.exit(0);
+	//		}
+	//	
+	//	}
 
-	public Catalog readFromXMLProduct(FileInputStream is)
-			throws XMLStreamException, URISyntaxException, FileNotFoundException {
-
+	public Catalog readFromXMLProduct(FileInputStream is) throws XMLStreamException, URISyntaxException, FileNotFoundException {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader reader = null;
 
 		try {
-
 			reader = inputFactory.createXMLStreamReader(is);
 
 			skipCommentsAndSpaces(reader);
 			return readCatalog(reader);
-
 		} finally {
 			if (reader != null) {
 				reader.close();
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	private Catalog readCatalog(XMLStreamReader reader) throws XMLStreamException {
-		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
-			
+		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {			
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Catalog structure is FALSE"));
 		}
-		
-		if (!"catalog".equals(reader.getLocalName())) {
-		
+
+		if (!"catalog".equals(reader.getLocalName())) {		
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start xml is FALSE"));
 		}
 
 		logger.info("<catalog>");
 
-		Catalog catalog = new Catalog();
-		
-			
-			if("catalog".equals(reader.getLocalName())) {
-				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				if (reader.getAttributeValue(null, "date") != null){
-					
-					
-				}
-				String date = reader.getAttributeValue(null, "date");
+		Catalog catalog = new Catalog();		
+
+		if("catalog".equals(reader.getLocalName())) {
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			if (reader.getAttributeValue(null, "date") != null){
 				
-				if (date.isEmpty()){
-					errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is not indicate"));
-				} else{
-				
-					try {
-						catalog.setCreationDate(sf.parse(date));
-					} catch (ParseException e) {
-						errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is FALSE"));
-			
-					}
-				}
-				skipCommentsAndSpaces(reader);
-				catalog.setProducts(new HashSet<>(readProducts(reader)));
-			} else if ( XMLStreamReader.END_ELEMENT == reader.getEventType() && "catalog".equals(reader.getLocalName())) {
-				logger.info("\t </catalog>");
-				
-			} else {
-				
-				errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "catalog attribute is FALSE"));	
 			}
-			return catalog;
+			String date = reader.getAttributeValue(null, "date");
+
+			if (date.isEmpty()){
+				errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is not indicate"));
+			} else{
+
+				try {
+					catalog.setCreationDate(sf.parse(date));
+				} catch (ParseException e) {
+					errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is FALSE"));
+
+				}
+			}
+			skipCommentsAndSpaces(reader);
+			catalog.setProducts(new HashSet<>(readProducts(reader)));
+		} else if ( XMLStreamReader.END_ELEMENT == reader.getEventType() && "catalog".equals(reader.getLocalName())) {
+			logger.info("\t </catalog>");
+
+		} else {
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "catalog attribute is FALSE"));	
+		}
+		return catalog;
 	}
 
 	private List<Product> readProducts(XMLStreamReader reader) throws XMLStreamException {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start products attribute is FALSE"));
 		}
-		
+
 		if (!"products".equals(reader.getLocalName())) {
-		
+
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "products attribute is FALSE"));
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		List<Product> products = new ArrayList<Product>();
@@ -148,7 +142,7 @@ public class ParseXML {
 				logger.info("\t </products>");
 				return products;
 			} else {
-			
+
 				errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "products attribute is FALSE"));
 			}
 		}
@@ -159,12 +153,12 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start product attribute is FALSE"));
 		}
-		
+
 		if (!"product".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "product attribute is FALSE"));
-		
+
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		Product product = new Product();
@@ -188,8 +182,8 @@ public class ParseXML {
 		skipCommentsAndSpaces(reader);
 		if (reader.getEventType() != XMLStreamReader.END_ELEMENT || !"product".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "End product tag : " 
-																			+ reader.getLocalName()
-																			+ "is FALSE "));
+					+ reader.getLocalName()
+					+ "is FALSE "));
 		}
 
 		logger.info("\t </product>");
@@ -211,7 +205,7 @@ public class ParseXML {
 		} catch (NumberFormatException e) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
 			return 0;
-			
+
 		}
 	}
 
@@ -220,12 +214,12 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start references attribute is FALSE"));
 		}
-		
+
 		if (!"references".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "references attribute is FALSE"));
-			
+
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		List<ProductDetail> references = new ArrayList<ProductDetail>();
@@ -248,11 +242,11 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start reference attribute is FALSE"));
 		}
-		
+
 		if (!"reference".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Reference attribute is FALSE"));
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		ProductDetail productDetail = new ProductDetail();
@@ -275,7 +269,7 @@ public class ParseXML {
 		productDetail.setImage_url(readImage(reader));
 		skipCommentsAndSpaces(reader);
 		productDetail.setDeliveries(new HashSet<>(readDeliveries(reader)));
-		
+
 		skipCommentsAndSpaces(reader);
 		if (reader.getEventType() != XMLStreamReader.END_ELEMENT || !"reference".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "End reference attribute is FALSE"));
@@ -291,11 +285,11 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start livraisons attribute is FALSE"));
 		}
-		
+
 		if (!"livraisons".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Livraisons attribute is FALSE"));
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		List<Delivery> deliveries = new ArrayList<Delivery>();
@@ -324,11 +318,11 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start livraison attribute is FALSE"));
 		}
-		
+
 		if (!"livraison".equals(reader.getLocalName())) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Livraison attribute is FALSE"));
 		}
-		
+
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		Delivery delivery = new Delivery();
@@ -339,9 +333,9 @@ public class ParseXML {
 		if (reader.getAttributeValue(null, "delai").isEmpty()){
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "delai attribute is not indicate"));
 		} else {
-		int time = Integer.parseInt(reader.getAttributeValue(null, "delai"));
-		
-		String unit = reader.getAttributeValue(null, "unit");
+			int time = Integer.parseInt(reader.getAttributeValue(null, "delai"));
+
+			String unit = reader.getAttributeValue(null, "unit");
 			if ("H".equals(unit)) {
 				time = time / 24;
 			} else if ("W".equals(unit)) {
@@ -349,11 +343,11 @@ public class ParseXML {
 			} else if ("M".equals(unit)) {
 				time = time * 30;
 			} else if ("D".equals(unit)) {
-				
+
 			} else {
 				errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "unit attribute is FALSE : " + unit));
 			}
-		delivery.setDelay(time);
+			delivery.setDelay(time);
 		}
 		if (reader.getAttributeValue(null, "prix").isEmpty()){
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "prix attribute is not indicate"));
@@ -361,12 +355,12 @@ public class ParseXML {
 		delivery.setFees(Double.parseDouble(reader.getAttributeValue(null, "prix")));
 
 		skipCommentsAndSpaces(reader);
-		
+
 		if (reader.getEventType() != XMLStreamReader.END_ELEMENT
 				|| ! "livraison".equals(reader.getLocalName())) {
-			
+
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "End livraison attribute is FALSE"));
-	}
+		}
 
 		logger.info("\t </livraison>");
 
@@ -416,7 +410,7 @@ public class ParseXML {
 		} catch (NumberFormatException e) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "weight attribute is not indicate"));
 			return 0;
-		
+
 		}
 	}
 
@@ -441,7 +435,7 @@ public class ParseXML {
 		if(XMLStreamReader.START_ELEMENT != reader.getEventType()) {
 			throw new RuntimeException("expecting START_ELEMENT but found " + reader.getEventType());
 		}
-		
+
 		if (!elementNameExpected.equals(reader.getLocalName())) {
 			throw new RuntimeException("<" + elementNameExpected +"> expected but found " + reader.getLocalName());
 		}
@@ -475,7 +469,7 @@ public class ParseXML {
 
 		return reader.getText();
 	}
-	
+
 	private void skipCommentsAndSpaces(XMLStreamReader reader)  throws XMLStreamException {
 		while(true) {
 			int eventType = reader.next();
