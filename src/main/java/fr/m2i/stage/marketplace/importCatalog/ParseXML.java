@@ -16,17 +16,31 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.m2i.stage.marketplace.domain.entity.Catalog;
+import fr.m2i.stage.marketplace.domain.entity.Category;
 import fr.m2i.stage.marketplace.domain.entity.Delivery;
 import fr.m2i.stage.marketplace.domain.entity.Product;
 import fr.m2i.stage.marketplace.domain.entity.ProductDetail;
+import fr.m2i.stage.marketplace.service.CategoryService;
 
 public class ParseXML {
 
 	private static final Logger logger = LoggerFactory.getLogger(ParseXML.class);
 
-	private List<ErrorXML> errors = new ArrayList<>();
+	private List<ErrorXML> errors;
+	private CategoryService categoryService;
+	
+	public ParseXML() {
+		errors = new ArrayList<>();
+	}
+
+	@Autowired
+	public ParseXML(CategoryService categoryService) {
+		errors = new ArrayList<>();
+		this.categoryService = categoryService;
+	}
 	
 	public boolean hasErrors() {
 		return ! errors.isEmpty();
@@ -36,29 +50,7 @@ public class ParseXML {
 		return errors;
 	}
 
-	//	public static void main(String[] args) throws URISyntaxException, FileNotFoundException, XMLStreamException {
-	//		FileInputStream fis = null;
-	//		URL resource = App.class.getResource("catalogue.xml");
-	//		File file = new File(resource.toURI());
-	//
-	//		try {
-	//
-	//			fis = new FileInputStream(file);
-	//			ParseXML p = new ParseXML();
-	//			
-	//			
-	//			System.out.println(p.readFromXMLProduct(fis));
-	//			
-	//			for (ErrorXML e : p.getErrors()) {
-	//				System.out.println("line " + e.getLine() + " : " + e.getMessage());
-	//			}
-	//			
-	//		} catch (ArrayIndexOutOfBoundsException aioobe) {
-	//
-	//			System.exit(0);
-	//		}
-	//	
-	//	}
+
 
 	public Catalog readFromXMLProduct(FileInputStream is) throws XMLStreamException, URISyntaxException, FileNotFoundException {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -83,8 +75,8 @@ public class ParseXML {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Catalog structure is FALSE"));
 		}
 
-		if (!"catalog".equals(reader.getLocalName())) {		
-			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start xml is FALSE"));
+		if (!"catalog".equals(reader.getLocalName())) {	 	
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Start xml is FALSE"+reader.getEventType()));
 		}
 
 		logger.info("<catalog>");
@@ -109,6 +101,7 @@ public class ParseXML {
 
 				}
 			}
+			
 			skipCommentsAndSpaces(reader);
 			catalog.setProducts(new HashSet<>(readProducts(reader)));
 		} else if ( XMLStreamReader.END_ELEMENT == reader.getEventType() && "catalog".equals(reader.getLocalName())) {
@@ -175,7 +168,13 @@ public class ParseXML {
 		product.setDescription(readDescription(reader));
 		skipCommentsAndSpaces(reader);
 		//a tester avec la db
-		//product.setCategory(readCategorie(reader));
+		try{
+		product.setCategory(readCategorie(reader));
+		}
+		catch(NullPointerException npe){
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
+			
+		}
 		skipCommentsAndSpaces(reader);
 		product.setListProductDetail(new HashSet<>( readReferences(reader)));
 
@@ -199,14 +198,20 @@ public class ParseXML {
 		return readSimpleElement(reader, "description");
 	}
 
-	private int readCategorie(XMLStreamReader reader) throws XMLStreamException {
+	private Category readCategorie(XMLStreamReader reader) throws XMLStreamException {
+		long idCategory;
 		try {
-			return Integer.parseInt(readSimpleElement(reader, "categorie"));
+			idCategory = Long.parseLong(readSimpleElement(reader, "categorie"));
 		} catch (NumberFormatException e) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
-			return 0;
-
+			return null;
 		}
+		Category c = categoryService.findById(idCategory);
+		if (c == null) {
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
+		}
+	
+		return c;
 	}
 
 	private List<ProductDetail> readReferences(XMLStreamReader reader) throws XMLStreamException {
