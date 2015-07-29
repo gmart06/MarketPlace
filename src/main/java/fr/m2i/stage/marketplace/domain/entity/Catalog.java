@@ -1,13 +1,17 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Catalog {
@@ -16,30 +20,36 @@ public class Catalog {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="date_import")
 	private Date creationDate;
+	
 	private String url;
 	
 	@OneToMany(mappedBy=("container"))
-	private List<Product> products;
+	private Set<Product> products;
 	
-	public Catalog() {}
+	@OneToOne
+	@JoinColumn(name="id_merchant")
+	private Merchant merchant;
 	
-	public Catalog(List<Product> products, Date creationDate, String url) {
+	public Catalog() {
+		this.products = new HashSet<>();
+	}
+	
+	public Catalog(Set<Product> products, Date creationDate, String url) {
 		this.products = products;
 		this.creationDate = creationDate;
 		this.url = url;
+		this.products = new HashSet<>();
 	}
 
 	public Long getId() {
 		return id;
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 	public Date getCreationDate() {

@@ -1,14 +1,19 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="product_detail")
 public class ProductDetail {
 	
 	@Id
@@ -25,15 +30,20 @@ public class ProductDetail {
 	private String color;
 	private double weight;
 	
+	@ManyToOne
+	@JoinColumn(name="id_product")
 	private Product product;
 	
-	@OneToMany(mappedBy=("productdetail"))
-	private List<Delivery> deliveries;
+	@OneToMany
+	@JoinTable(name="product_detail_delivery"
+			 , joinColumns=@JoinColumn(name="id_product_detail", referencedColumnName="id")
+			 , inverseJoinColumns=@JoinColumn(name="id_delivery", referencedColumnName="id"))
+	private Set<Delivery> deliveries;
 	
 	public ProductDetail() {}
 	
 	public ProductDetail(String sku, int stock, double price, double ecotax, int ean, String description, String image_url,
-			String size, String color, int weight, List<Delivery> deliveries) {		
+			String size, String color, int weight, Set<Delivery> deliveries) {		
 		this.sku = sku;
 		this.stock = stock;
 		this.price = price;
@@ -114,9 +124,6 @@ public class ProductDetail {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getSku() {
 		return sku;
 	}
@@ -130,11 +137,11 @@ public class ProductDetail {
 		this.stock = stock;
 	}
 
-	public List<Delivery> getDeliveries() {
+	public Set<Delivery> getDeliveries() {
 		return deliveries;
 	}
 
-	public void setDeliveries(List<Delivery> deliveries) {
+	public void setDeliveries(Set<Delivery> deliveries) {
 		this.deliveries = deliveries;
 	}
 

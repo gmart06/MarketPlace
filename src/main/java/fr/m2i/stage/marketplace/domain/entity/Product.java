@@ -1,11 +1,14 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,29 +21,33 @@ public class Product {
 	private String reference;
 	private String title;
 	private String description;
+	
+	@Column(name="visible")
 	private boolean isVisible;
 	
+	@ManyToOne
+	@JoinColumn(name="id_catalog")
 	private Catalog container;
+	
+	@ManyToOne
+	@JoinColumn(name="id_category")
 	private Category category;	
 	
 	@OneToMany(mappedBy=("product"))
-	private List<ProductDetail> listProductDetail;
+	private Set<ProductDetail> productDetails;
 	
 	public Product() {}	
 	
-	public Product(String reference, String title, String description, boolean isVisible, List<ProductDetail> listProductDetail) {		
+	public Product(String reference, String title, String description, boolean isVisible, Set<ProductDetail> listProductDetail) {		
 		this.reference = reference;
 		this.title = title;
 		this.description = description;
 		this.isVisible = isVisible;
-		this.listProductDetail = listProductDetail;
+		this.productDetails = listProductDetail;
 	}
 
 	public Long getId() {
 		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 	public String getReference() {
 		return reference;
@@ -66,11 +73,11 @@ public class Product {
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
-	public List<ProductDetail> getListProductDetail() {
-		return listProductDetail;
+	public Set<ProductDetail> getProductDetails() {
+		return productDetails;
 	}
-	public void setListProductDetail(List<ProductDetail> listProductDetail) {
-		this.listProductDetail = listProductDetail;
+	public void setListProductDetail(Set<ProductDetail> productDetails) {
+		this.productDetails = productDetails;
 	}
 	public Catalog getContainer() {
 		return container;

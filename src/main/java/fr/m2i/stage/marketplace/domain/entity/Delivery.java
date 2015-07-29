@@ -1,5 +1,6 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,10 @@ public class Delivery {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name="carrier")
 	private String name;
 	private int delay;
 	private double fees;
-	
-	private ProductDetail productdetail;
 	
 	public Delivery() {}
 
@@ -28,10 +28,6 @@ public class Delivery {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Merchant {
@@ -25,6 +26,8 @@ public class Merchant {
 	private String email;
 	private String phoneNumber;
 	private String SIRET;
+	
+	@OneToOne(mappedBy="merchant")
 	private Catalog catalog;
 	
 	public Merchant() {}
@@ -49,9 +52,6 @@ public class Merchant {
 	
 	public int getId() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;
