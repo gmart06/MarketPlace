@@ -30,11 +30,8 @@ public class ParseXML {
 	private static final Logger logger = LoggerFactory.getLogger(ParseXML.class);
 
 	private List<ErrorXML> errors;
-	private CategoryService categoryService;
 	
-	public ParseXML() {
-		errors = new ArrayList<>();
-	}
+	private CategoryService categoryService;
 
 	@Autowired
 	public ParseXML(CategoryService categoryService) {
@@ -49,8 +46,6 @@ public class ParseXML {
 	public List<ErrorXML> getErrors() {
 		return errors;
 	}
-
-
 
 	public Catalog readFromXMLProduct(FileInputStream is) throws XMLStreamException, URISyntaxException, FileNotFoundException {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -84,10 +79,13 @@ public class ParseXML {
 		Catalog catalog = new Catalog();		
 
 		if("catalog".equals(reader.getLocalName())) {
-			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			if (reader.getAttributeValue(null, "date") != null){
-				
+			if (reader.getAttributeValue(null, "version").isEmpty()){
+				errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Version attribute is not indicate"));
+			} else if (!"1.0".equals(reader.getAttributeValue(null, "version"))) {
+					errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Version attribute " + reader.getAttributeValue(null, "version") + "is False. Must be 1.0"));
 			}
+						
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = reader.getAttributeValue(null, "date");
 
 			if (date.isEmpty()){
@@ -97,7 +95,7 @@ public class ParseXML {
 				try {
 					catalog.setCreationDate(sf.parse(date));
 				} catch (ParseException e) {
-					errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is FALSE"));
+					errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Date attribute is MalFormed"));
 
 				}
 			}
@@ -162,19 +160,16 @@ public class ParseXML {
 		}
 
 		product.setReference(reader.getAttributeValue(null, "ref"));
+		
 		skipCommentsAndSpaces(reader);
 		product.setTitle(readTitle(reader));
+		
 		skipCommentsAndSpaces(reader);
 		product.setDescription(readDescription(reader));
+		
 		skipCommentsAndSpaces(reader);
-		//a tester avec la db
-		try{
 		product.setCategory(readCategorie(reader));
-		}
-		catch(NullPointerException npe){
-			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
-			
-		}
+		
 		skipCommentsAndSpaces(reader);
 		product.setListProductDetail(new HashSet<>( readReferences(reader)));
 
@@ -200,15 +195,21 @@ public class ParseXML {
 
 	private Category readCategorie(XMLStreamReader reader) throws XMLStreamException {
 		long idCategory;
+		Category c;
 		try {
 			idCategory = Long.parseLong(readSimpleElement(reader, "categorie"));
+			
+			logger.info("categorie " + idCategory + " is found !");
+			c = categoryService.findById(idCategory);			
+			logger.info("categorie " +idCategory + "exist");
+			
 		} catch (NumberFormatException e) {
 			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
 			return null;
 		}
-		Category c = categoryService.findById(idCategory);
+		
 		if (c == null) {
-			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie attribute of product tag is FALSE"));
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "categorie " +idCategory + "attribute of product tag doesn't exist"));
 		}
 	
 		return c;
