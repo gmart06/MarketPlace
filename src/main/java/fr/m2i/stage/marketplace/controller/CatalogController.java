@@ -11,6 +11,8 @@ import java.nio.charset.Charset;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,17 +23,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.m2i.stage.marketplace.domain.entity.Catalog;
 import fr.m2i.stage.marketplace.importCatalog.ParseXML;
-import fr.m2i.stage.marketplace.service.CatalogService;
+
 
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
+	private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 	
-	private CatalogService catalogService;
+
+	private ParseXML parser;
 
 	@Autowired
-	public CatalogController(CatalogService catalogService) {
-		this.catalogService = catalogService;
+	public CatalogController(ParseXML parser) {
+		this.parser = parser;
+	
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.GET)
@@ -40,7 +45,8 @@ public class CatalogController {
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)
-	public String addCatalog(@ModelAttribute("catalogFile") MultipartFile catalogFile, Model model) throws IllegalStateException, IOException {
+	
+	public String addCatalog(@ModelAttribute("catalogFile") MultipartFile catalogFile, Model model)  throws IllegalStateException, IOException {
 		if(catalogFile == null || catalogFile.getSize() == 0) {
 			// Error no submitted file
 			model.addAttribute("errorFileType", "No transmitted file");
@@ -56,12 +62,13 @@ public class CatalogController {
 			if (filename.endsWith(".xml") && isAnXMLFile(catalogFile.getInputStream())) {
 				File catalogXMLFile = new File(directory + filename);
 				catalogFile.transferTo(catalogXMLFile);
-				
-				ParseXML parser = new ParseXML();
+			
+				catalogXMLFile.deleteOnExit();
 				Catalog catalog = null;
 				try {
 					catalog = parser.readFromXMLProduct(new FileInputStream(catalogXMLFile));
 				} catch (XMLStreamException | URISyntaxException e) {
+					logger.info("oups...", e);
 					model.addAttribute("errorFileType", "The file can't be open.");
 					return "merchant_space/import_catalog";
 				}
@@ -72,13 +79,16 @@ public class CatalogController {
 					return "merchant_space/import_catalog";
 				} 
 				
+				
+				 
 				model.addAttribute("success", "You have correctly added " + catalog.getProducts().size() + " products in your catalog.");
 			} else {
 				// Error isn't an XML
 				model.addAttribute("errorFileType", "Please, send a XML file.");
 				return "merchant_space/import_catalog";
 			}
-			catalogFile.getInputStream().close();
+			
+			
 		}
 		return "merchant_space/import_catalog";
 	}
