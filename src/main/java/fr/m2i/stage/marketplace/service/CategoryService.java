@@ -22,7 +22,6 @@ public class CategoryService {
 	
 	public Category findById(Long id) {
 
-		logger.info("return cat = " + id);
 		return categoryRepository.findOne(id);
 	}
 
