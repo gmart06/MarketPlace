@@ -1,5 +1,7 @@
 package fr.m2i.stage.marketplace.service;
 
+
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +27,7 @@ public class CategoryService {
 		return categoryRepository.findOne(id);
 	}
 
+	public List<Category> findAll() {
+		return categoryRepository.findAll();
+	}
 }
