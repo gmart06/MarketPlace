@@ -53,4 +53,9 @@ public class Delivery {
 	public void setFees(double fees) {
 		this.fees = fees;
 	}
+
+	@Override
+	public String toString() {
+		return "Delivery [id=" + id + ", name=" + name + ", delay=" + delay + ", fees=" + fees + "]";
+	}
 }

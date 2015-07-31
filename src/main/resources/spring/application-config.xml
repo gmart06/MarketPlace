@@ -69,6 +69,9 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-<bean id="parser" class="fr.m2i.stage.marketplace.importCatalog.ParseXML" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="parser" class="fr.m2i.stage.marketplace.importCatalog.ParseXML" />
 
 </beans>
