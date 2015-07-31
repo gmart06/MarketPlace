@@ -10,7 +10,8 @@
 	</head>
 	<body>
 		<%@include file='header.jsp'%>
-		<%@include file='navbar.jsp'%>
+			<%@include file='menuTop/navbar.jsp'%>
+
 		<table>
 			<tr>
 				<td><%@include file='menu.jsp'%></td>

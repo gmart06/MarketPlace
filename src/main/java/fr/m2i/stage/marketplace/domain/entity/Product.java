@@ -2,6 +2,7 @@ package fr.m2i.stage.marketplace.domain.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Product {
 	@JoinColumn(name="id_category")
 	private Category category;	
 	
-	@OneToMany(mappedBy=("product"))
+	@OneToMany(mappedBy=("product"), cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
 	private Set<ProductDetail> productDetails;
 	
 	public Product() {}	
@@ -92,5 +93,11 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 		// ajouter test d'une category vide
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", reference=" + reference + ", title=" + title + ", description=" + description
+				+ ", isVisible=" + isVisible + ", category=" + category + ", productDetails=" + productDetails + "]";
 	}
 }

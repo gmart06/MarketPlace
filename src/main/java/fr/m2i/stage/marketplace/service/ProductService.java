@@ -12,6 +12,7 @@ import fr.m2i.stage.marketplace.domain.repository.ProductRepository;
 public class ProductService {
 	
 	private ProductRepository productRepository;
+	
 	@Autowired
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
