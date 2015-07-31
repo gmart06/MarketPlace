@@ -31,4 +31,8 @@ public class CategoryService {
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
+
+	public List<String> findDistinctName1() {		
+		return categoryRepository.findDistinctName1();
+	}	
 }
