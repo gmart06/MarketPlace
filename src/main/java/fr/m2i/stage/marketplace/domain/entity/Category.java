@@ -1,5 +1,7 @@
 package fr.m2i.stage.marketplace.domain.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,12 +24,16 @@ public class Category {
 	
 	@Column(name="cat2")
 	private String name2;
+	
 	@Column(name="cat1")
 	private String name1;
+	
 	@Column(name="cat3ID")
 	private int id3;
+	
 	@Column(name="cat2ID")
 	private int id2;
+	
 	@Column(name="cat1ID")
 	private int id1;
 	
@@ -101,7 +107,7 @@ public class Category {
 		return id1;
 	}
 
-	public void setId1(int id1) {
+	public void setId1(Integer id1) {
 		this.id1 = id1;
 	}
 	
