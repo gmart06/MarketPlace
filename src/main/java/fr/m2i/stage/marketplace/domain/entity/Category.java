@@ -74,7 +74,7 @@ public class Category {
 	}
 
 	public String getName1() {
-		return name1;
+		return String.valueOf(name1);
 	}
 
 	public void setName1(String name1) {
@@ -103,6 +103,5 @@ public class Category {
 
 	public void setId1(int id1) {
 		this.id1 = id1;
-	}
-	
+	}	
 }
