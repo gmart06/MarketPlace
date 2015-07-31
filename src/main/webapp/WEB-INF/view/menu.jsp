@@ -5,8 +5,8 @@
 
 <div id="menu"> 
 	<ul id="categories">
-		<c:forEach items="${categories}" var="category" varStatus="loop">				
-			<li><a href="/MarketPlace/category/${category.id1}">${category.name1}</a></li>
+		<c:forEach items="${categoriesName1}" var="categoriesName1">
+			<li><a href="/MarketPlace/category/X">${categoriesName1}</a></li>			
 		</c:forEach>
 	</ul>
 </div>

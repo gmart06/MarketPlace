@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.m2i.stage.marketplace.domain.entity.Category;
+import fr.m2i.stage.marketplace.domain.entity.Product;
 import fr.m2i.stage.marketplace.service.CategoryService;
 import fr.m2i.stage.marketplace.service.ProductService;
 
@@ -28,7 +29,11 @@ public class ProductController {
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String getAllCategory(Model model){		
 		List<Category> categories = categoryService.findAll();		
-		model.addAttribute("categories", categories);
+		//List<Product> products = productService.findAll();
+		
+		List<String> categoriesName1 = categoryService.findDistinctName1();
+		
+		model.addAttribute("categoriesName1", categoriesName1);
 		return "/index";
 	}		
 }
