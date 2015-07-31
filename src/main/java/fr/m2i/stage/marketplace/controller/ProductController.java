@@ -13,7 +13,7 @@ import fr.m2i.stage.marketplace.service.CategoryService;
 import fr.m2i.stage.marketplace.service.ProductService;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/")
 public class ProductController {
 	
 	private CategoryService categoryService;
@@ -25,19 +25,10 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
-	/*
-	@RequestMapping(value="/index", method=RequestMethod.GET)
-	public String getIndex() {
-		System.out.println("***TEST***");
-		return "/index";
-	}
-	*/
-	
-	@RequestMapping(value="/index", method = RequestMethod.GET)
+	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String getAllCategory(Model model){		
-		List<Category> categories = categoryService.findAll();
-		
-		model.addAttribute("categories", categories);		
-		return "/menu";
-	}	
+		List<Category> categories = categoryService.findAll();		
+		model.addAttribute("categories", categories);
+		return "/index";
+	}		
 }
