@@ -51,7 +51,7 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 				<td><%@include file='../menu.jsp'%></td>
 				<td id="main">
 
-		<%@include file='mainList.jsp'%>
+		<%@include file='mainBasket.jsp'%>
 	
 
 </td>

@@ -26,6 +26,7 @@ a:hover {
     float:left;
     padding:10px;
     text-align: center;
+    vertical-align: top;
 }
 #footer {
     background-color:grey;
@@ -46,13 +47,16 @@ ul#products{
  	margin:0;
 }
 
-ul li.product{
-	margin-left:5px;
+ul li.product {
+	padding: 20px;
+	margin-left:60px;
 	display:block;
 	float:left;
 	border:1px solid;
 	color: grey;
+	align: top;
 }
+
 
 td#main{
 	vertical-align: text-top;
@@ -60,3 +64,4 @@ td#main{
     margin-right: auto;
     width: 100%;
 }
+

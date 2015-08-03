@@ -29,7 +29,7 @@ public class ProductService {
 			// TODO transform this exception into a business exception
 			throw new RuntimeException("Not category for id " + categoryid );
 		}
-		return productRepository.findByCategory(category);
+		return productRepository.findDistinctByCategory(category);
 	}
 	
 	
