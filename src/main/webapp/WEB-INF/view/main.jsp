@@ -6,7 +6,7 @@
 <div id="main">
 	<ul id="products">
 		<c:forEach items="${products}" var="product">
-			<li class=product><a href="/MarketPlace/product/X"><img src="<c:url value="/resources/article1.jpg" />" alt="" height="135" width="135" /></a><br></br>${product.title}</li>			
+			<li class=product><a href="/MarketPlace/product/${product.id }"><img src="<c:url value="${product.url }" />" alt="" height="135" width="135" /></a><br></br>${product.title}</li>			
 		</c:forEach>
 	</ul>
 </div>

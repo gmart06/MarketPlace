@@ -10,9 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedEntityGraphs({
+	@NamedEntityGraph(name="Product.productDetails"
+					, attributeNodes={@NamedAttributeNode(value="productDetails")})})
 public class Product {
 	
 	@Id
@@ -77,6 +83,7 @@ public class Product {
 	public Set<ProductDetail> getProductDetails() {
 		return productDetails;
 	}
+	
 	public void setListProductDetail(Set<ProductDetail> productDetails) {
 		this.productDetails = productDetails;
 	}

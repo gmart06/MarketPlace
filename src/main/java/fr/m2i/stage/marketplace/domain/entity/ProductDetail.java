@@ -160,16 +160,6 @@ public class ProductDetail {
 		// ajouter test du produit sans produitDetail
 	}
 
-	@Override
-	public String toString() {
-		return "ProductDetail [id=" + id + ", sku=" + sku + ", stock=" + stock + ", price=" + price + ", ecotax="
-				+ ecotax + ", ean=" + ean + ", description=" + description + ", image_url=" + image_url + ", size="
-<<<<<<< HEAD
-				+ size + ", color=" + color + ", weight=" + weight + ", product=" + product + ", deliveries="
-				+ deliveries + "]";
-=======
-				+ size + ", color=" + color + ", weight=" + weight + ", deliveries=" + deliveries + "]";
->>>>>>> cdc9ebbd2a1630ced48d10cc618f9ff29c0b6d91
+
 	}	
 	
-}
