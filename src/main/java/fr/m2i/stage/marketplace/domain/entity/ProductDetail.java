@@ -2,6 +2,7 @@ package fr.m2i.stage.marketplace.domain.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,7 +35,7 @@ public class ProductDetail {
 	@JoinColumn(name="id_product")
 	private Product product;
 	
-	@OneToMany
+	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
 	@JoinTable(name="product_detail_delivery"
 			 , joinColumns=@JoinColumn(name="id_product_detail", referencedColumnName="id")
 			 , inverseJoinColumns=@JoinColumn(name="id_delivery", referencedColumnName="id"))
@@ -163,8 +164,12 @@ public class ProductDetail {
 	public String toString() {
 		return "ProductDetail [id=" + id + ", sku=" + sku + ", stock=" + stock + ", price=" + price + ", ecotax="
 				+ ecotax + ", ean=" + ean + ", description=" + description + ", image_url=" + image_url + ", size="
+<<<<<<< HEAD
 				+ size + ", color=" + color + ", weight=" + weight + ", product=" + product + ", deliveries="
 				+ deliveries + "]";
+=======
+				+ size + ", color=" + color + ", weight=" + weight + ", deliveries=" + deliveries + "]";
+>>>>>>> cdc9ebbd2a1630ced48d10cc618f9ff29c0b6d91
 	}	
 	
 }

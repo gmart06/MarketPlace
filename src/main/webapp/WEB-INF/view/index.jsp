@@ -26,6 +26,7 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 	</head>
 	<body>
 		<%@include file='header.jsp'%>
+<<<<<<< HEAD
 		<ul id="dropdown">
 				<c:forEach items="${ categories }" var="cat1">
 				<li> <a href="/MarketPlace/${ cat1.id }"> ${ cat1.name }</a>
@@ -46,6 +47,10 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 				</li>
 				</c:forEach>
 		</ul>
+=======
+			<%@include file='menuTop/navbar.jsp'%>
+
+>>>>>>> cdc9ebbd2a1630ced48d10cc618f9ff29c0b6d91
 		<table>
 			<tr>
 				<td><%@include file='menu.jsp'%></td>

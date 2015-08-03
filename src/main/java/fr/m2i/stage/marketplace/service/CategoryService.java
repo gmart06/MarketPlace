@@ -38,7 +38,8 @@ public class CategoryService {
 	
 		return categoryRepository.findAll();
 	}
-	 
 
-	  
+	public List<String> findDistinctName1() {		
+		return categoryRepository.findDistinctName1();
+	}	
 }

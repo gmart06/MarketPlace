@@ -80,7 +80,7 @@ public class Category {
 	}
 
 	public String getName1() {
-		return name1;
+		return String.valueOf(name1);
 	}
 
 	public void setName1(String name1) {
@@ -110,5 +110,10 @@ public class Category {
 	public void setId1(Integer id1) {
 		this.id1 = id1;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", name3=" + name3 + ", name2=" + name2 + ", name1=" + name1
+				+ ", id3=" + id3 + ", id2=" + id2 + ", id1=" + id1 + ", isVisible=" + isVisible + "]";
+	}
 }

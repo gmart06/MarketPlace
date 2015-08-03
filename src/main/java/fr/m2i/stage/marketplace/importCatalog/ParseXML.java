@@ -47,6 +47,15 @@ public class ParseXML {
 	public List<ErrorXML> getErrors() {
 		return errors;
 	}
+	
+	public static void addAllDependencies(Catalog catalog) {
+		for (Product p : catalog.getProducts()) {
+			p.setContainer(catalog);
+			for (ProductDetail detail : p.getProductDetails()) {
+				detail.setProduct(p);
+			}
+		}
+	}
 
 	public Catalog readFromXMLProduct(FileInputStream is) throws XMLStreamException, URISyntaxException, FileNotFoundException {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -257,13 +266,15 @@ public class ParseXML {
 		logger.info("\t <" + reader.getLocalName() + ">");
 
 		ProductDetail productDetail = new ProductDetail();
+		
+		productDetail.setSku(reader.getAttributeValue(null, "ref"));
 
 		skipCommentsAndSpaces(reader);
 		productDetail.setPrice(readPrice(reader));
 		skipCommentsAndSpaces(reader);
 		productDetail.setEcotax(readEcotax(reader));
 		skipCommentsAndSpaces(reader);
-		productDetail.setSku(readRefDescr(reader));
+		productDetail.setDescription(readRefDescr(reader));
 		skipCommentsAndSpaces(reader);
 		productDetail.setEan(readEan(reader));
 		skipCommentsAndSpaces(reader);
