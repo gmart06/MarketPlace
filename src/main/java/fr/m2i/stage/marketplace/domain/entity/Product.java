@@ -32,7 +32,7 @@ public class Product {
 	
 	@ManyToOne
 	@JoinColumn(name="id_category")
-	private Category category;	
+	private Categories category;	
 	
 	@OneToMany(mappedBy=("product"), cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
 	private Set<ProductDetail> productDetails;
@@ -87,11 +87,11 @@ public class Product {
 		this.container = container;
 		// ajouter test du catalog vide
 	}
-	public Category getCategory() {
+	public Categories getCategory() {
 		return category;
 	}
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategory(Categories categories) {
+		this.category = categories;
 		// ajouter test d'une category vide
 	}
 

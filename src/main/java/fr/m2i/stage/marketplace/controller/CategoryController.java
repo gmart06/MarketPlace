@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.m2i.stage.marketplace.domain.entity.Categories;
 import fr.m2i.stage.marketplace.domain.repository.CategoryRepository;
 
 @Controller
@@ -27,11 +28,17 @@ public class CategoryController {
 	public String menu(Model model) {
 		// recuperer la liste des categories
 
-		List<Object[]> category1 = cat1Repository.findDistinctId1Name1();
-		model.addAttribute("category", category1);
-		List<Object[]> category2 = cat1Repository.findDistinctId1Name2();
+//		List<Object[]> category1 = cat1Repository.findDistinctId1Name1();
+//		model.addAttribute("category", category1);
+//		List<Object[]> category2 = cat1Repository.findDistinctId1Name2();
+//		model.addAttribute("category2", category2);
+//		List<Object[]> category3 = cat1Repository.findDistinctId1Name3();
+//		model.addAttribute("category3", category3);
+		List<Categories> categories = cat1Repository.findByHierarchy(1);
+		model.addAttribute("categories", categories);
+		List<Categories> category2 = cat1Repository.findByHierarchy(2);
 		model.addAttribute("category2", category2);
-		List<Object[]> category3 = cat1Repository.findDistinctId1Name3();
+		List<Categories> category3 = cat1Repository.findByHierarchy(3);
 		model.addAttribute("category3", category3);
 		return "menuTop/navbar";
 
