@@ -10,8 +10,9 @@ import fr.m2i.stage.marketplace.domain.entity.Product;
 
 
 public interface ProductRepository extends CrudRepository<Product, Long> {	
+	@EntityGraph(value="Product.ProductDetails")
 	List<Product> findAll();
-	@EntityGraph(value="Product.productDetails")
+	@EntityGraph(value="Product.ProductDetails")
 	List<Product> findByCategory(Categories category);
 
 	

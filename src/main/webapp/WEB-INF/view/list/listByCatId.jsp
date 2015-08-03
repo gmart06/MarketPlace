@@ -50,9 +50,9 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 			<tr>
 				<td><%@include file='../menu.jsp'%></td>
 				<td id="mainList"><ul id="products">
-	<c:forEach items="${ products }" var="prod">
+
 		<%@include file='mainList.jsp'%></li>
-			</c:forEach>
+		
 	</ul>
 
 

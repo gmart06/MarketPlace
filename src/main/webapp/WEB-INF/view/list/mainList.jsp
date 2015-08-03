@@ -7,7 +7,12 @@
 
 	<ul id="products">
 	<c:forEach items="${ products }" var="prod">
-		<li class=product id="product1"><img src="<c:url value="${ prod.url }" />" alt="" height="135" width="135" /><p> ${ prod.sku }</li>
+
+
+
+	<c:out value="${prod.productDetails[0] }"/>
+	
+		<li class=product id="product1"><img src="<c:url value="${ prod.productDetails[0][0].image_url }" />" alt="" height="135" width="135" /><p> ${ prod.productDetails[0][0].sku }</li>
 			</c:forEach>
 	</ul>
 	
