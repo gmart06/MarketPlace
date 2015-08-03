@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.m2i.stage.marketplace.domain.entity.Catalog;
+import fr.m2i.stage.marketplace.domain.entity.Categories;
 import fr.m2i.stage.marketplace.domain.entity.Category;
 import fr.m2i.stage.marketplace.domain.entity.Delivery;
 import fr.m2i.stage.marketplace.domain.entity.Product;
@@ -193,9 +194,9 @@ public class ParseXML {
 		return readSimpleElement(reader, "description");
 	}
 
-	private Category readCategorie(XMLStreamReader reader) throws XMLStreamException {
+	private Categories readCategorie(XMLStreamReader reader) throws XMLStreamException {
 		long idCategory;
-		Category c;
+		Categories c;
 		try {
 			idCategory = Long.parseLong(readSimpleElement(reader, "categorie"));
 			

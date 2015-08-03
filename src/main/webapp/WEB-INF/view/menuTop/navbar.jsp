@@ -28,31 +28,24 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 	<h2> Liste des categories</h2>
 
 <ul id="dropdown">
-				<c:forEach items="${ category }" var="cat1">
-				<li> <a href="/cat/${ cat1[0] }"> ${ cat1[1] }</a>
+				<c:forEach items="${ categories }" var="cat1">
+				<li> <a href="/list/?id=${ cat1.id }/"> ${ cat1.name }</a>
 					<ul>
 					<c:forEach items="${ category2 }" var="cat2" end="9">
-						
 						<li>
-							<a href="/cat/${ cat2[0] }"> ${ cat2[1] }</a>
+							<a href="/cat${ cat2.level_hierarchy }?id=${ cat2.id }/"> ${ cat2.name }</a>
 							<ul>
 					<c:forEach items="${ category3 }" var="cat3" end="9">
-						
 						<li>
-							<a href="/cat/${ cat3[0] }"> ${ cat3[1] }</a>
-							
+							<a href="/cat${ cat3.level_hierarchy }?id=${ cat3.id }/"> ${ cat3.name }</a>
 						</li>
-						
 						</c:forEach>
 					</ul>
 						</li>
-						
 						</c:forEach>
 					</ul>
 				</li>
 				</c:forEach>
-			</ul>
-
-
+</ul>
 </body>
 </html>

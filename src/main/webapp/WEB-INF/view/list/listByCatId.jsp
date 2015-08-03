@@ -25,7 +25,7 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 		</script>
 	</head>
 	<body>
-		<%@include file='header.jsp'%>
+		<%@include file='../header.jsp'%>
 		<ul id="dropdown">
 				<c:forEach items="${ categories }" var="cat1">
 				<li> <a href="/MarketPlace/${ cat1.id }"> ${ cat1.name }</a>
@@ -48,10 +48,18 @@ src="/MarketPlace/resources/script/js/jquery.min.js">
 		</ul>
 		<table>
 			<tr>
-				<td><%@include file='menu.jsp'%></td>
-				<td id="main"><%@include file='main.jsp'%></td>
+				<td><%@include file='../menu.jsp'%></td>
+				<td id="mainList"><ul id="products">
+	<c:forEach items="${ products }" var="prod">
+		<%@include file='mainList.jsp'%></li>
+			</c:forEach>
+	</ul>
+
+
+
+</td>
 			</tr>
 		</table>
-		<%@include file='footer.html'%>		
+		<%@include file='../footer.html'%>		
 	</body>
 </html>

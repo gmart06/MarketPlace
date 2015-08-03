@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import fr.m2i.stage.marketplace.domain.entity.Categories;
 import fr.m2i.stage.marketplace.domain.entity.Category;
 import fr.m2i.stage.marketplace.domain.repository.CategoryRepository;
 import fr.m2i.stage.marketplace.importCatalog.ParseXML;
@@ -21,35 +23,18 @@ public class CategoryService {
 		this.categoryRepository = categoryRepository;
 	}
 	
-	public Category findById(Long id) {
+	public Categories findById(Long id) {
 
 		return categoryRepository.findOne(id);
 	}
+	
+	
+	public List<Categories> findByHierarchy(long id) {
 
-	/**
-	 * [id1, name1]
-	 * @return
-	 */
-	public List<Object[]> findDistinctId1Name1() {
-
-		return categoryRepository.findDistinctId1Name1();
+		return categoryRepository.findByHierarchy(id);
 	}
-	/**
-	 * [id2, name2]
-	 * @return
-	 */
-	public List<Object[]> findDistinctId1Name2() {
-
-		return categoryRepository.findDistinctId1Name2();
-	}/**
-	 * [id3, name3]
-	 * @return
-	 */
-	public List<Object[]> findDistinctId1Name3() {
-
-		return categoryRepository.findDistinctId1Name3();
-	}
-	public List<Category> findAll() {
+	
+	public List<Categories> findAll() {
 	
 		return categoryRepository.findAll();
 	}
