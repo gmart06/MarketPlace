@@ -151,6 +151,10 @@ public class Merchant {
 	}
 	
 	public boolean hasProductInCatalog() {
+		if (catalog == null) {
+			return false;
+		}
+		
 		return ! catalog.getProducts().isEmpty();
 	}
 }
