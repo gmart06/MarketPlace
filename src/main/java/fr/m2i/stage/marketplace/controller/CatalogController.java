@@ -72,14 +72,14 @@ public class CatalogController {
 			//Error file size too much
 			model.addAttribute("errorFileType", "This file is too big, it must be less than 1Mio.");
 			return "merchant_space/import_catalog";
-		} else {		
-			String directory = "C:\\Users\\Administrateur\\Desktop\\Java Spring\\temp\\";
+		} else {
 			String filename = catalogFile.getOriginalFilename();
-			logger.info(catalogFile.getContentType());
 
 			if (filename.endsWith(".xml") && isAnXMLFile(catalogFile.getInputStream())) {
-				File catalogXMLFile = new File(directory + filename);
+				File catalogXMLFile = File.createTempFile(filename, null);
 				catalogFile.transferTo(catalogXMLFile);
+				
+				logger.info("Temp file : " + catalogXMLFile.getAbsolutePath());
 
 				catalogXMLFile.deleteOnExit();
 				Catalog catalog = null;
