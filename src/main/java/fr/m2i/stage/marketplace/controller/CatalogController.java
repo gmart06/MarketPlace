@@ -78,8 +78,6 @@ public class CatalogController {
 			if (filename.endsWith(".xml") && isAnXMLFile(catalogFile.getInputStream())) {
 				File catalogXMLFile = File.createTempFile(filename, null);
 				catalogFile.transferTo(catalogXMLFile);
-				
-				logger.info("Temp file : " + catalogXMLFile.getAbsolutePath());
 
 				catalogXMLFile.deleteOnExit();
 				Catalog catalog = null;
@@ -101,12 +99,15 @@ public class CatalogController {
 				ParseXML.addAllDependencies(catalog);
 
 				if(merchant.hasProductInCatalog()) {
+					logger.info("Merchant has already products.");
+					logger.info("Merchant has " + merchant.getCatalog().getProducts().size() + " products.");
 					catalogService.deleteCatalog(merchant.getCatalog());
-				} 
+					logger.info("Delete finish");
+				}
 
 				catalog.setMerchant(merchant);
 				merchant.setCatalog(catalog);
-				merchantService.add(merchant);
+				//merchantService.add(merchant);
 
 				model.addAttribute("success", "You have correctly added " + catalog.getProducts().size() + " products in your catalog.");
 			} else {

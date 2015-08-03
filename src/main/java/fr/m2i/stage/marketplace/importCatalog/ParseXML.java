@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.m2i.stage.marketplace.domain.entity.Catalog;
 import fr.m2i.stage.marketplace.domain.entity.Categories;
-import fr.m2i.stage.marketplace.domain.entity.Category;
 import fr.m2i.stage.marketplace.domain.entity.Delivery;
 import fr.m2i.stage.marketplace.domain.entity.Product;
 import fr.m2i.stage.marketplace.domain.entity.ProductDetail;
