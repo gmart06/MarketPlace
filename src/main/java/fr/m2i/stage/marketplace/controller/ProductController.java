@@ -2,9 +2,7 @@ package fr.m2i.stage.marketplace.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +27,19 @@ public class ProductController {
 	private CategoryService categoryService;
 	private ProductService productService;
 
+
 	@Autowired
 	public ProductController(CategoryService categoryService, ProductService productService) {
 		this.categoryService = categoryService;
 		this.productService = productService;
 
+
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getAllCategory(Model model) {
+		
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String getAllCategory(Model model){		
+		
 
 		List<Categories> categories = categoryService.findByHierarchy(1);
 		model.addAttribute("categories", categories);
@@ -67,10 +69,12 @@ public class ProductController {
 		try{
 			List<Product> products = productService.findByCategoryId(categoryId);
 		model.addAttribute("products", products);
+
 		} catch (ResourceNotFoundException r){
 		return null;
 		}
-
+			
+		
 		 return "/list/listByCatId";
 		
 	}

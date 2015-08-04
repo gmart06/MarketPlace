@@ -164,9 +164,10 @@ public class ProductDetail {
 	public String toString() {
 		return "ProductDetail [id=" + id + ", sku=" + sku + ", stock=" + stock + ", price=" + price + ", ecotax="
 				+ ecotax + ", ean=" + ean + ", description=" + description + ", image_url=" + image_url + ", size="
+
 				+ size + ", color=" + color + ", weight=" + weight + "]";
 	}
- 
+
 
 	}	
 	

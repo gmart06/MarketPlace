@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.m2i.stage.marketplace.domain.entity.Catalog;
 import fr.m2i.stage.marketplace.domain.entity.Categories;
-import fr.m2i.stage.marketplace.domain.entity.Category;
 import fr.m2i.stage.marketplace.domain.entity.Delivery;
 import fr.m2i.stage.marketplace.domain.entity.Product;
 import fr.m2i.stage.marketplace.domain.entity.ProductDetail;
@@ -268,6 +267,14 @@ public class ParseXML {
 		ProductDetail productDetail = new ProductDetail();
 		
 		productDetail.setSku(reader.getAttributeValue(null, "ref"));
+		
+		int stock = 0;
+		try {
+			stock = Integer.parseInt(reader.getAttributeValue(null, "stock"));			
+		} catch (NumberFormatException e) {
+			errors.add(new ErrorXML(reader.getLocation().getLineNumber(), "Stock attribute is FALSE"));
+		}
+		productDetail.setStock(stock);
 
 		skipCommentsAndSpaces(reader);
 		productDetail.setPrice(readPrice(reader));

@@ -20,11 +20,11 @@ public class CatalogService {
 	@Transactional
 	public void deleteCatalog(Catalog catalog) {
 		catalogRepository.delete(catalog);
-	}	
-	
-	@Transactional
-	public void add(Catalog catalog) {
-//	CatalogRepository.save(catalog); //le . save est valable pour insert comme update	
 	}
+	
+	/*@Transactional
+	public void add(Catalog catalog) {
+		catalogRepository.save(catalog); //le . save est valable pour insert comme update	
+	}*/
 
 }
