@@ -34,6 +34,7 @@ public class CategoryController {
 //		model.addAttribute("category2", category2);
 //		List<Object[]> category3 = cat1Repository.findDistinctId1Name3();
 //		model.addAttribute("category3", category3);
+		
 		List<Categories> categories = cat1Repository.findByHierarchy(1);
 		model.addAttribute("categories", categories);
 		List<Categories> category2 = cat1Repository.findByHierarchy(2);
@@ -41,6 +42,7 @@ public class CategoryController {
 		List<Categories> category3 = cat1Repository.findByHierarchy(3);
 		model.addAttribute("category3", category3);
 		return "menuTop/navbar";
+		
 
 	}
 }

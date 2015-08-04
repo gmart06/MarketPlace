@@ -14,7 +14,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 	@EntityGraph(value="Product.ProductDetails", type=EntityGraphType.LOAD)
 	List<Product> findAll();
 	@EntityGraph(value="Product.ProductDetails", type=EntityGraphType.LOAD)
-	List<Product> findDistinctByCategory(Categories category);
+	List<Product> findByCategoryId(long category);
 
 	
 }

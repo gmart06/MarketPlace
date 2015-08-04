@@ -27,10 +27,11 @@ public class ProductService {
 		Categories category = categoryRepository.findOne(categoryid);
 		if(category == null) {
 			// TODO transform this exception into a business exception
-			throw new RuntimeException("Not category for id " + categoryid );
+						throw new RuntimeException("Not category for id " + categoryid );
 		}
-		return productRepository.findDistinctByCategory(category);
+		return productRepository.findByCategoryId(category.getId());
 	}
+
 	
 	
 	public List<Product> findAll() {

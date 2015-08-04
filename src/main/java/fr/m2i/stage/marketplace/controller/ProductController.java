@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import fr.m2i.stage.marketplace.domain.entity.Categories;
 import fr.m2i.stage.marketplace.domain.entity.Product;
 import fr.m2i.stage.marketplace.domain.entity.ProductDetail;
+import fr.m2i.stage.marketplace.exception.ResourceNotFoundException;
 import fr.m2i.stage.marketplace.service.CategoryService;
 import fr.m2i.stage.marketplace.service.ProductService;
 
@@ -63,12 +64,11 @@ public class ProductController {
 		model.addAttribute("category3", category3);
 		model.addAttribute("categoriesName1", categoriesName1);
 
-		List<Product> products = productService.findByCategoryId(categoryId);
+		try{
+			List<Product> products = productService.findByCategoryId(categoryId);
 		model.addAttribute("products", products);
-
-		for (Product productDetail : products) {
-			productDetail.getProductDetails();
-			logger.info("prod = " + productDetail.toString());
+		} catch (ResourceNotFoundException r){
+		return null;
 		}
 
 		 return "/list/listByCatId";

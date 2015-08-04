@@ -15,12 +15,12 @@
 
 		<div class="title">${prod.title}</div>
 		<div class="add">
-			<form:form commandName="addBasket"> 
 			
 			
-	            <input TYPE="SUBMIT" NAME="submit" VALUE="Ajouter au panier">
+			
+	           <a href="/MarketPlace/product/add/${prod.id }"><img src="<c:url value="/resources/ajouter-au-panier.gif" />" width="120" height="30" /></a>
 	            
-	        </form:form>
+	     
         </div>
 		</li>
 	
